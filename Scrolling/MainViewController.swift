@@ -27,6 +27,7 @@ class MainViewController: UIViewController, ContentViewControllerDelegate {
     private lazy var headerView: UIView = {
         let view = UIView()
         view.backgroundColor = .cyan
+        view.autoresizingMask = [.flexibleWidth]
         view.frame = CGRect(x: CGFloat(),
                             y: self.view.safeAreaInsets.top,
                             width: self.view.bounds.width,
