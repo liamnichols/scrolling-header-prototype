@@ -206,7 +206,7 @@ extension MainViewController: UIPageViewControllerDelegate {
         // If this view controller had previouslly compressed the header by scrolling but
         //  the previous view controllers had expanded the header again, we need to move
         //  the contentOffset back so that the top sits below the header perfectly.
-        if viewController.scrollView.contentOffset.y > headerView.frame.maxY {
+        if viewController.scrollView.contentOffset.y > -headerView.frame.maxY {
             viewController.scrollView.contentOffset.y = -headerView.frame.maxY
         }
     }
