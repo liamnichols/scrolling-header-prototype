@@ -65,7 +65,7 @@ class MainViewController: UIViewController, ContentViewControllerDelegate {
         ])
 
         // Make sure the gestures are set up initially
-        updateGestureRecognizers()
+        updateContentGestureRecognizers()
     }
 
     func contentViewControllerDidLoad(viewController: ContentViewController) {
@@ -148,7 +148,7 @@ class MainViewController: UIViewController, ContentViewControllerDelegate {
         scrollViews.forEach { $0.contentInset.bottom = max(0, ($0.frame.height - headerInset) - $0.contentSize.height) }
     }
 
-    private func updateGestureRecognizers() {
+    private func updateContentGestureRecognizers() {
 
         // Get the current scroll view for comparison
         let currentScrollView = getContentViewController(pageViewController.viewControllers)?.scrollView
@@ -197,16 +197,13 @@ extension MainViewController: UIPageViewControllerDelegate {
                             willTransitionTo pendingViewControllers: [UIViewController]) {
         guard let viewController = getContentViewController(pendingViewControllers) else { return }
 
-        // Make sure that the contentOffset is moved up to match where the header if incase
-        //  it has changed on a previous view and we don't have the content to fill it.
-        if viewController.scrollView.contentOffset.y < -headerView.frame.maxY {
-            viewController.scrollView.contentOffset.y = -headerView.frame.maxY
-        }
-
-        // If this view controller had previouslly compressed the header by scrolling but
-        //  the previous view controllers had expanded the header again, we need to move
-        //  the contentOffset back so that the top sits below the header perfectly.
-        if viewController.scrollView.contentOffset.y > -headerView.frame.maxY {
+        // Work out the expected height of the header based on the scroll insets of the
+        //  view controller that we are about to display. If the height differs to the
+        //  actual height then we must reset the contentOffset back so that we sit just
+        //  under the header again.
+        let base = (-1 * viewController.scrollView.contentOffset.y) - view.safeAreaInsets.top
+        let expectedHeaderHeight = max(headerViewCompressedHeight, min(headerViewExpandedHeight, base))
+        if expectedHeaderHeight != headerView.frame.height {
             viewController.scrollView.contentOffset.y = -headerView.frame.maxY
         }
     }
@@ -215,7 +212,7 @@ extension MainViewController: UIPageViewControllerDelegate {
 
         // Update the gesture recognizers because we need the current scrollview's
         //  pan gesture to be added to self.view so that we can scroll the header.
-        updateGestureRecognizers()
+        updateContentGestureRecognizers()
     }
 }
 
