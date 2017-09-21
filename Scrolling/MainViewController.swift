@@ -1,8 +1,5 @@
 import UIKit
 
-private let headerViewExpandedHeight: CGFloat = 180.0
-private let headerViewCompressedHeight: CGFloat = 44.0
-
 class MainViewController: UIViewController, ContentViewControllerDelegate {
 
     private lazy var contentViewControllers: [ContentViewController] = [
@@ -44,9 +41,9 @@ class MainViewController: UIViewController, ContentViewControllerDelegate {
         addChildViewController(headerViewController)
         headerViewController.view.autoresizingMask = [.flexibleWidth]
         headerViewController.view.frame = CGRect(x: CGFloat(),
-                                                 y: self.view.safeAreaInsets.top,
+                                                 y: 0,
                                                  width: self.view.bounds.width,
-                                                 height: HeaderViewController.expandedHeight)
+                                                 height: HeaderViewController.expandedHeight + self.view.safeAreaInsets.top)
         view.addSubview(headerViewController.view)
         headerViewController.didMove(toParentViewController: self)
 
@@ -60,9 +57,9 @@ class MainViewController: UIViewController, ContentViewControllerDelegate {
         //  we get notified by this callback so we can then become the delegate
         //  and perform any additional setup that we need to.
         viewController.scrollView.delegate = self
-        viewController.scrollView.contentInset.top = headerViewExpandedHeight + view.safeAreaInsets.top
-        viewController.scrollView.scrollIndicatorInsets.top = headerViewExpandedHeight + view.safeAreaInsets.top
-        viewController.scrollView.contentOffset.y = -(headerViewExpandedHeight + view.safeAreaInsets.top)
+        viewController.scrollView.contentInset.top = HeaderViewController.expandedHeight + view.safeAreaInsets.top
+        viewController.scrollView.scrollIndicatorInsets.top = HeaderViewController.expandedHeight + view.safeAreaInsets.top
+        viewController.scrollView.contentOffset.y = -(HeaderViewController.expandedHeight + view.safeAreaInsets.top)
         viewController.scrollView.isDirectionalLockEnabled = true
 
         // Add an observer to the contentSize of each scroll view.
@@ -86,12 +83,12 @@ class MainViewController: UIViewController, ContentViewControllerDelegate {
                 let isAtTop = scrollView.contentOffset.y == -scrollView.contentInset.top
 
                 // Update the content inset to account for the change in safe area
-                scrollView.contentInset.top = headerViewExpandedHeight + view.safeAreaInsets.top
-                scrollView.scrollIndicatorInsets.top = headerViewExpandedHeight + view.safeAreaInsets.top
+                scrollView.contentInset.top = HeaderViewController.expandedHeight + view.safeAreaInsets.top
+                scrollView.scrollIndicatorInsets.top = HeaderViewController.expandedHeight + view.safeAreaInsets.top
 
                 // Only change contentOffset if we were at the top before
                 if isAtTop {
-                    scrollView.contentOffset.y = -(headerViewExpandedHeight + view.safeAreaInsets.top)
+                    scrollView.contentOffset.y = -(HeaderViewController.expandedHeight + view.safeAreaInsets.top)
                 }
         }
     }
@@ -119,7 +116,7 @@ class MainViewController: UIViewController, ContentViewControllerDelegate {
     private func updateContentBottomInsets(scrollViews: [UIScrollView]? = nil) {
 
         // The top inset that the header will take in it's compressed state
-        let headerInset = headerViewCompressedHeight + view.safeAreaInsets.top
+        let headerInset = HeaderViewController.collapsedHeight + view.safeAreaInsets.top
 
         // Use the specified scroll view's or get all of the
         //  loaded scroll view's from each ContnetViewController
@@ -166,13 +163,13 @@ extension MainViewController: UIScrollViewDelegate {
 
         // Calculate the height that the header view should take
         let base = (-1 * scrollView.contentOffset.y) - view.safeAreaInsets.top
-        let height = max(headerViewCompressedHeight, min(headerViewExpandedHeight, base))
+        let height = max(HeaderViewController.collapsedHeight, min(HeaderViewController.expandedHeight, base))
 
         // Update the header view with the correct height
         headerViewController.view.frame = CGRect(x: 0.0,
-                                                 y: view.safeAreaInsets.top,
+                                                 y: 0,
                                                  width: view.frame.width,
-                                                 height: height)
+                                                 height: height + view.safeAreaInsets.top)
     }
 }
 
@@ -187,7 +184,7 @@ extension MainViewController: UIPageViewControllerDelegate {
         //  actual height then we must reset the contentOffset back so that we sit just
         //  under the header again.
         let base = (-1 * viewController.scrollView.contentOffset.y) - view.safeAreaInsets.top
-        let expectedHeaderHeight = max(headerViewCompressedHeight, min(headerViewExpandedHeight, base))
+        let expectedHeaderHeight = max(HeaderViewController.collapsedHeight, min(HeaderViewController.expandedHeight, base))
         if expectedHeaderHeight != headerViewController.view.frame.height {
             viewController.scrollView.contentOffset.y = -headerViewController.view.frame.maxY
         }
