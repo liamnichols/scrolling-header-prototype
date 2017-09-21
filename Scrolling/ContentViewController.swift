@@ -46,6 +46,10 @@ class ContentViewController: UIViewController {
         view.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
         view.addSubview(tableView)
 
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -55,6 +59,13 @@ class ContentViewController: UIViewController {
         ])
 
         delegate?.contentViewControllerDidLoad(viewController: self)
+    }
+
+    @objc private func refresh(_ sender: UIRefreshControl) {
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            sender.endRefreshing()
+        }
     }
 }
 
