@@ -24,22 +24,7 @@ class MainViewController: UIViewController, ContentViewControllerDelegate {
         return viewController
     }()
 
-    private lazy var headerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .cyan
-        view.autoresizingMask = [.flexibleWidth]
-        view.frame = CGRect(x: CGFloat(),
-                            y: self.view.safeAreaInsets.top,
-                            width: self.view.bounds.width,
-                            height: headerViewExpandedHeight)
-        return view
-    }()
-
-    private lazy var debugLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private lazy var headerViewController = HeaderViewController()
 
     private var observers = [NSKeyValueObservation]()
 
@@ -56,13 +41,14 @@ class MainViewController: UIViewController, ContentViewControllerDelegate {
         pageViewController.didMove(toParentViewController: self)
 
         // The header view is then positioned on top of any content.
-        view.addSubview(headerView)
-
-        headerView.addSubview(debugLabel)
-        NSLayoutConstraint.activate([
-            debugLabel.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            debugLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
-        ])
+        addChildViewController(headerViewController)
+        headerViewController.view.autoresizingMask = [.flexibleWidth]
+        headerViewController.view.frame = CGRect(x: CGFloat(),
+                                                 y: self.view.safeAreaInsets.top,
+                                                 width: self.view.bounds.width,
+                                                 height: HeaderViewController.expandedHeight)
+        view.addSubview(headerViewController.view)
+        headerViewController.didMove(toParentViewController: self)
 
         // Make sure the gestures are set up initially
         updateContentGestureRecognizers()
@@ -183,11 +169,10 @@ extension MainViewController: UIScrollViewDelegate {
         let height = max(headerViewCompressedHeight, min(headerViewExpandedHeight, base))
 
         // Update the header view with the correct height
-        debugLabel.text = "\(height)"
-        headerView.frame = CGRect(x: 0.0,
-                                  y: view.safeAreaInsets.top,
-                                  width: view.frame.width,
-                                  height: height)
+        headerViewController.view.frame = CGRect(x: 0.0,
+                                                 y: view.safeAreaInsets.top,
+                                                 width: view.frame.width,
+                                                 height: height)
     }
 }
 
@@ -203,8 +188,8 @@ extension MainViewController: UIPageViewControllerDelegate {
         //  under the header again.
         let base = (-1 * viewController.scrollView.contentOffset.y) - view.safeAreaInsets.top
         let expectedHeaderHeight = max(headerViewCompressedHeight, min(headerViewExpandedHeight, base))
-        if expectedHeaderHeight != headerView.frame.height {
-            viewController.scrollView.contentOffset.y = -headerView.frame.maxY
+        if expectedHeaderHeight != headerViewController.view.frame.height {
+            viewController.scrollView.contentOffset.y = -headerViewController.view.frame.maxY
         }
     }
 

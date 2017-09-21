@@ -12,6 +12,7 @@
 		5306287D1F1AAD4E00F4A41E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5306287C1F1AAD4E00F4A41E /* Assets.xcassets */; };
 		530628801F1AAD4E00F4A41E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5306287E1F1AAD4E00F4A41E /* LaunchScreen.storyboard */; };
 		534767121F1ACD4500F8FCAF /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534767111F1ACD4500F8FCAF /* ContentViewController.swift */; };
+		537F65431F73FCDE00ED4185 /* HeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537F65421F73FCDE00ED4185 /* HeaderViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		5306287F1F1AAD4E00F4A41E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		530628811F1AAD4E00F4A41E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		534767111F1ACD4500F8FCAF /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
+		537F65421F73FCDE00ED4185 /* HeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 				530628751F1AAD4E00F4A41E /* AppDelegate.swift */,
 				530628771F1AAD4E00F4A41E /* MainViewController.swift */,
 				534767111F1ACD4500F8FCAF /* ContentViewController.swift */,
+				537F65421F73FCDE00ED4185 /* HeaderViewController.swift */,
 				5306287C1F1AAD4E00F4A41E /* Assets.xcassets */,
 				5306287E1F1AAD4E00F4A41E /* LaunchScreen.storyboard */,
 				530628811F1AAD4E00F4A41E /* Info.plist */,
@@ -135,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				530628781F1AAD4E00F4A41E /* MainViewController.swift in Sources */,
+				537F65431F73FCDE00ED4185 /* HeaderViewController.swift in Sources */,
 				534767121F1ACD4500F8FCAF /* ContentViewController.swift in Sources */,
 				530628761F1AAD4E00F4A41E /* AppDelegate.swift in Sources */,
 			);
